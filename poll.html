@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Poll</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .option {
+      margin-bottom: 20px;
+    }
+    .vote-button {
+      padding: 10px 15px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .bar {
+      height: 20px;
+      background-color: #4CAF50;
+      margin-top: 5px;
+      transition: width 0.3s ease;
+      color: white;
+      padding-left: 5px;
+      font-size: 14px;
+      line-height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Vote for Your Favorite Option</h2>
+  <div id="poll"></div>
+  <script>
+    const options = ["Option A", "Option B", "Option C", "Option D", "Option E", "Option F", "Option G", "Option H"];
+    const votes = new Array(options.length).fill(0);
+
+    function renderPoll() {
+      const pollDiv = document.getElementById('poll');
+      pollDiv.innerHTML = '';
+      const totalVotes = votes.reduce((a, b) => a + b, 0);
+      options.forEach((option, i) => {
+        const container = document.createElement('div');
+        container.className = 'option';
+
+        const btn = document.createElement('button');
+        btn.className = 'vote-button';
+        btn.textContent = option;
+        btn.onclick = () => {
+          votes[i]++;
+          renderPoll();
+        };
+
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        const percent = totalVotes === 0 ? 0 : (votes[i] / totalVotes) * 100;
+        bar.style.width = `${percent}%`;
+        bar.textContent = `${votes[i]} vote(s)`;
+
+        container.appendChild(btn);
+        container.appendChild(bar);
+        pollDiv.appendChild(container);
+      });
+    }
+
+    renderPoll();
+  </script>
+</body>
+</html>
